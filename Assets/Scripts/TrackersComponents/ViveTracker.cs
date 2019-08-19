@@ -7,17 +7,20 @@ using UnityEngine;
 /// </summary>
 public class ViveTracker : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int id;
+
+    void OnEnable()
     {
-        Debug.Log("New Vive Tracker connected.");
         TrackersManager.instance.NewTrackerConnected(gameObject);
-        //TrackersManager.instance.trackers.Add(gameObject);
+        id = TrackersManager.instance.trackers.Count;
+        gameObject.name = "Vive Tracker " + id.ToString();
+        Debug.Log(gameObject.name+" connected.");
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        Debug.Log(gameObject.name + " disconnected.");
+        TrackersManager.instance.TrackerDisconnected(gameObject);
     }
 }

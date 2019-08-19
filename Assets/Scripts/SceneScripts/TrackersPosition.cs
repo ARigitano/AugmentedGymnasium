@@ -5,24 +5,40 @@ using UnityEngine.UI;
 
 public class TrackersPosition : MonoBehaviour
 {
-
-    private List<Text> positionTexts = new List<Text>();
+    [SerializeField]
+    private GameObject _textPrefab;
+    private List<GameObject> _positionTexts = new List<GameObject>();
        
     public void NewPositionText()
     {
-        GameObject positionText = new GameObject("ViveTrackerPosition");
+        GameObject positionText = Instantiate(_textPrefab, transform.position, transform.rotation);
+        positionText.name = "Vive Tracker" + TrackersManager.instance.trackers.Count.ToString();
         positionText.transform.SetParent(this.transform);
-        positionText.transform.position = new Vector3(0f, 0f, 0f);
-
-        Text newText = positionText.AddComponent<Text>();
-        newText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-        newText.color = Color.black;
-        newText.text = "ViveTracker";
-        positionTexts.Add(newText);
+        
+        _positionTexts.Add(positionText);
     }
 
-    private void Update()
+    public void RemovePositiontext()
     {
+        for(int i=0; i<_positionTexts.Count; i++)
+        {
+            if(_positionTexts[i].name != "TrackersManager.instance.trackers[i].name")
+            {
+                Destroy(_positionTexts[i].gameObject);
+                _positionTexts.RemoveAt(i);
+                break;
+            }
+        }
+    }
 
+    private void FixedUpdate()
+    {
+        for (int i = 0; i < _positionTexts.Count; i++)
+        {
+            _positionTexts[i].GetComponent<Text>().text = TrackersManager.instance.trackers[i].name + "\nx=" 
+                + TrackersManager.instance.trackers[i].transform.position.x.ToString() + " " 
+                + "y=" + TrackersManager.instance.trackers[i].transform.position.y.ToString() + " " 
+                + "z=" + TrackersManager.instance.trackers[i].transform.position.z.ToString();
+        }
     }
 }
