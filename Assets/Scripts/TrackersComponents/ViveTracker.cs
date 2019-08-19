@@ -7,7 +7,10 @@ using UnityEngine;
 /// </summary>
 public class ViveTracker : MonoBehaviour
 {
-    public int id;
+    /// <summary>
+    /// Id number of the tracker
+    /// </summary>
+    public int id; 
 
     void OnEnable()
     {
@@ -15,7 +18,6 @@ public class ViveTracker : MonoBehaviour
         id = TrackersManager.instance.trackers.Count;
         gameObject.name = "Vive Tracker " + id.ToString();
         Debug.Log(gameObject.name+" connected.");
-        
     }
 
     private void OnDisable()
