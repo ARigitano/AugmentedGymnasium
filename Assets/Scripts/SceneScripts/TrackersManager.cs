@@ -8,24 +8,7 @@ using UnityEngine.Events;
 /// </summary>
 public class TrackersManager : MonoBehaviour
 {
-    #region Slingleton
-
     public static TrackersManager instance;
-
-    private void Awake()
-    {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
-
-    #endregion
-
     /// <summary>
     /// List of all the trackers in the scene
     /// </summary>
@@ -37,7 +20,19 @@ public class TrackersManager : MonoBehaviour
     /// <summary>
     /// A tracker has been disconnected event
     /// </summary>
-    public UnityEvent trackerDisconnected;                     
+    public UnityEvent trackerDisconnected;
+
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     /// <summary>
     /// Called when a new tracker has been connected
