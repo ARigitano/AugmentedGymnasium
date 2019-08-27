@@ -24,13 +24,20 @@ public class TrackerCircle : MonoBehaviour
     {
         _circle.color = new Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f);
 
+        StickGround(this.gameObject);
+    }
+
+    /// <summary>
+    /// Object will position itself on the ground.
+    /// </summary>
+    private void StickGround(GameObject mesh)
+    {
         RaycastHit hit;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
-        //Circle will position itself on the ground.
         if (Physics.Raycast(transform.position, forward, out hit, 50, _ground))
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, hit.collider.transform.position.z);
+            mesh.transform.position = new Vector3(mesh.transform.position.x, mesh.transform.position.y, hit.collider.transform.position.z);
         }
     }
 }
