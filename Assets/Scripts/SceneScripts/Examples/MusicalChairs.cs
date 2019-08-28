@@ -46,6 +46,8 @@ public class MusicalChairs : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int _waitingTime = 10;
+    [SerializeField]
+    private List<GameObject> _chairs = new List<GameObject>();
 
     /// <summary>
     /// Launching the game.
@@ -63,8 +65,6 @@ public class MusicalChairs : MonoBehaviour
     /// <returns></returns>
     IEnumerator Rounds()
     {
-        for (int i = 0; i < _nbChairs; i++)
-        {
             ChairsInstantiating();
 
             for (int j = _waitingTime; j >= 0; j--)
@@ -81,6 +81,10 @@ public class MusicalChairs : MonoBehaviour
 
             _nbChairs--;
             _status.text = "End of round";
+
+        if(_nbChairs > 0)
+        {
+            StartCoroutine(Rounds());
         }
     }
 
@@ -89,12 +93,23 @@ public class MusicalChairs : MonoBehaviour
     /// </summary>
     private void ChairsInstantiating()
     {
+        if(_chairs != null)
+        {
+            foreach(GameObject chair in _chairs)
+            {
+                Destroy(chair);
+            }
+
+            _chairs.Clear();
+        }
+
         for (int i = 0; i < _nbChairs; i++)
         {
             float angle = i * Mathf.PI * 2f / _nbChairs;
             Vector3 position = new Vector3(Mathf.Cos(angle) * _radius, Mathf.Sin(angle) * _radius, transform.position.y);
             GameObject chair = Instantiate(_chairPrefab, position, Quaternion.identity);
             StickGround(chair);
+            _chairs.Add(chair);
         }
     }
 
