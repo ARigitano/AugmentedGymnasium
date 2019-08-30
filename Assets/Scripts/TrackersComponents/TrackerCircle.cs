@@ -18,6 +18,14 @@ public class TrackerCircle : MonoBehaviour
     /// </summary>
     [SerializeField]
     private LayerMask _ground;
+    /// <summary>
+    /// Has the player's area been deactivated?
+    /// </summary>
+    public bool isActive = true;
+    /// <summary>
+    /// Can the player's area be deactivated after a certain condition is met?
+    /// </summary>
+    public bool isSafe = false;
 
     // Start is called before the first frame update
     void Start()

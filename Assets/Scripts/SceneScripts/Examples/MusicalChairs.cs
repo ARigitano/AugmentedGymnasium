@@ -28,10 +28,15 @@ public class MusicalChairs : MonoBehaviour
     [SerializeField]
     private LayerMask _ground;
     /// <summary>
-    /// Duration of a round in seconds.
+    /// Minimum duration of a round in seconds.
     /// </summary>
     [SerializeField]
-    private int _roundDuration = 60;
+    private int _roundDurationMin = 20;
+    /// <summary>
+    /// Maximum duration of a round in seconds.
+    /// </summary>
+    [SerializeField]
+    private int _roundDurationMax = 60;
     /// <summary>
     /// The players.
     /// </summary>
@@ -48,6 +53,26 @@ public class MusicalChairs : MonoBehaviour
     private int _waitingTime = 10;
     [SerializeField]
     private List<GameObject> _chairs = new List<GameObject>();
+    /// <summary>
+    /// 
+    /// </summary>
+    public static MusicalChairs instance;
+    /// <summary>
+    /// 
+    /// </summary>
+    public int safeChairs = 0;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     /// <summary>
     /// Launching the game.
@@ -65,26 +90,48 @@ public class MusicalChairs : MonoBehaviour
     /// <returns></returns>
     IEnumerator Rounds()
     {
-            ChairsInstantiating();
+        int roundDuration = Random.Range(_roundDurationMin, _roundDurationMax);
 
-            for (int j = _waitingTime; j >= 0; j--)
+        for (int j = _waitingTime; j >= 0; j--)
+        {
+            _status.text = "Round starts in " + j;
+            yield return new WaitForSeconds(1f);
+        }
+
+        ChairsInstantiating();
+
+        for (int j = roundDuration; j >= 0; j--)
+        {
+            _status.text = "";
+            yield return new WaitForSeconds(1f);
+        }
+
+        _status.text = "SIT!";
+
+        while (safeChairs < _nbChairs)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        for(int j = 0; j<=_players.Count; j++)
+        {
+            if (!_players[j].GetComponent<TrackerCircle>().isSafe)
             {
-                _status.text = "Round starts in " + j;
-                yield return new WaitForSeconds(1f);
+                _players[j].SetActive(false);
+                _players.RemoveAt(j);
             }
+        }
 
-            for (int j = _roundDuration; j >= 0; j--)
-            {
-                _status.text = j + " seconds remaining";
-                yield return new WaitForSeconds(1f);
-            }
-
-            _nbChairs--;
-            _status.text = "End of round";
+        _nbChairs--;
+        _status.text = "End of round";
 
         if(_nbChairs > 0)
         {
             StartCoroutine(Rounds());
+        }
+        else
+        {
+            _status.text = " Winner: " + _players[0].name;
         }
     }
 
@@ -102,11 +149,20 @@ public class MusicalChairs : MonoBehaviour
 
             _chairs.Clear();
         }
-
-        for (int i = 0; i < _nbChairs; i++)
+        if (_nbChairs > 1)
         {
-            float angle = i * Mathf.PI * 2f / _nbChairs;
-            Vector3 position = new Vector3(Mathf.Cos(angle) * _radius, Mathf.Sin(angle) * _radius, transform.position.y);
+            for (int i = 0; i < _nbChairs; i++)
+            {
+                float angle = i * Mathf.PI * 2f / _nbChairs;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * _radius, Mathf.Sin(angle) * _radius, transform.position.y);
+                GameObject chair = Instantiate(_chairPrefab, position, Quaternion.identity);
+                StickGround(chair);
+                _chairs.Add(chair);
+            }
+        }
+        else
+        {
+            Vector3 position = transform.position;
             GameObject chair = Instantiate(_chairPrefab, position, Quaternion.identity);
             StickGround(chair);
             _chairs.Add(chair);
