@@ -11,7 +11,7 @@ public class MusicalChairs : MonoBehaviour
     /// <summary>
     /// The number of chairs to be spawned.
     /// </summary>
-    private int _nbChairs = 8;
+    private int _nbChairs;
     /// <summary>
     /// Prefab of a chair.
     /// </summary>
@@ -31,12 +31,12 @@ public class MusicalChairs : MonoBehaviour
     /// Minimum duration of a round in seconds.
     /// </summary>
     [SerializeField]
-    private int _roundDurationMin = 20;
+    private int _roundDurationMin = 1;
     /// <summary>
     /// Maximum duration of a round in seconds.
     /// </summary>
     [SerializeField]
-    private int _roundDurationMax = 60;
+    private int _roundDurationMax = 2;
     /// <summary>
     /// The players.
     /// </summary>
@@ -51,16 +51,23 @@ public class MusicalChairs : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int _waitingTime = 10;
+    /// <summary>
+    /// List of chairs.
+    /// </summary>
     [SerializeField]
     private List<GameObject> _chairs = new List<GameObject>();
     /// <summary>
-    /// 
+    /// Intance of musical chairs for singleton.
     /// </summary>
     public static MusicalChairs instance;
     /// <summary>
-    /// 
+    /// Number of occupied chairs.
     /// </summary>
     public int safeChairs = 0;
+    /// <summary>
+    /// Are the players allowed to sit?
+    /// </summary>
+    public bool canSit = false;
 
     private void Awake()
     {
@@ -92,6 +99,7 @@ public class MusicalChairs : MonoBehaviour
     {
         int roundDuration = Random.Range(_roundDurationMin, _roundDurationMax);
 
+        //Waiting for beginning of round.
         for (int j = _waitingTime; j >= 0; j--)
         {
             _status.text = "Round starts in " + j;
@@ -100,6 +108,7 @@ public class MusicalChairs : MonoBehaviour
 
         ChairsInstantiating();
 
+        //Turning around chairs.
         for (int j = roundDuration; j >= 0; j--)
         {
             _status.text = "";
@@ -107,24 +116,37 @@ public class MusicalChairs : MonoBehaviour
         }
 
         _status.text = "SIT!";
+        canSit = true;
 
+        //Sitting as quickly as possible.
         while (safeChairs < _nbChairs)
         {
             yield return new WaitForSeconds(0.1f);
         }
 
-        for(int j = 0; j<=_players.Count; j++)
+        canSit = false;
+
+        //Disqualifying the unsitted player.
+        for(int j = 0; j<_players.Count; j++)
         {
             if (!_players[j].GetComponent<TrackerCircle>().isSafe)
             {
                 _players[j].SetActive(false);
-                _players.RemoveAt(j);
+                break;
             }
         }
 
+        //Resetting the round.
         _nbChairs--;
         _status.text = "End of round";
+        safeChairs = 0;
 
+        foreach(GameObject player in _players)
+        {
+            player.GetComponent<TrackerCircle>().isSafe = false;
+        }
+
+        //Restarting the round or ending the game.
         if(_nbChairs > 0)
         {
             StartCoroutine(Rounds());

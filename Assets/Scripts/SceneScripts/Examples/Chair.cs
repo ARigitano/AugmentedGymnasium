@@ -14,28 +14,19 @@ public class Chair : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PlayerArea" && _occupants.Count == 0)
+        if(other.tag == "PlayerArea" && _occupants.Count == 0 && MusicalChairs.instance.canSit)
         {
-            Debug.Log("okokk");
             other.GetComponent<TrackerCircle>().isSafe = true;
             _occupants.Add(other.gameObject);
             MusicalChairs.instance.safeChairs++;
         }
     }
 
-    /*private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.tag == "PlayerArea")
         {
             other.GetComponent<TrackerCircle>().isSafe = false;
-
-            for(int i = 0; i<= _occupants.Count; i++)
-            {
-                if(_occupants[i] == other.gameObject)
-                {
-                    _occupants.RemoveAt(i);
-                }
-            }
         }
-    }*/
+    }
 }
