@@ -26,9 +26,12 @@ public class TrackerCircle : MonoBehaviour
     /// Can the player's area be deactivated after a certain condition is met?
     /// </summary>
     public bool isSafe = false;
+    [SerializeField]
+    private Text _scoreText;
+    public int score = 1000;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _circle.color = new Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f);
 
@@ -47,5 +50,10 @@ public class TrackerCircle : MonoBehaviour
         {
             mesh.transform.position = new Vector3(mesh.transform.position.x, mesh.transform.position.y, hit.collider.transform.position.z);
         }
+    }
+
+    private void Update()
+    {
+        _scoreText.text = score.ToString();
     }
 }
