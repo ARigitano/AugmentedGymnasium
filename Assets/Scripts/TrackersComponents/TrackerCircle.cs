@@ -26,9 +26,19 @@ public class TrackerCircle : MonoBehaviour
     /// Can the player's area be deactivated after a certain condition is met?
     /// </summary>
     public bool isSafe = false;
+    /// <summary>
+    /// Displays the life or score of the player.
+    /// </summary>
     [SerializeField]
     private Text _scoreText;
+    /// <summary>
+    /// Score or life of the player.
+    /// </summary>
     public int score = 1000;
+    /// <summary>
+    /// Maximum life points the players can have.
+    /// </summary>
+    public int lifeMax = 1000;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,6 +64,9 @@ public class TrackerCircle : MonoBehaviour
 
     private void Update()
     {
-        _scoreText.text = score.ToString();
+        if (score > 0)
+            _scoreText.text = score.ToString();
+        else
+            _scoreText.text = "DEAD";
     }
 }
