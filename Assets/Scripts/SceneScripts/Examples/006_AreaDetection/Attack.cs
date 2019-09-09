@@ -58,7 +58,7 @@ public class Attack : MonoBehaviour
     {
         if(other.tag == "PlayerArea" && isReady && !other.GetComponent<TrackerCircle>().isSafe)
         {
-            other.GetComponent<TrackerCircle>().score -= damages;
+            other.GetComponent<TrackerCircle>().life -= damages;
         }
     }
 }

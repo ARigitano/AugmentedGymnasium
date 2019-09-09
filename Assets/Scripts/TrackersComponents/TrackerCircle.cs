@@ -27,18 +27,27 @@ public class TrackerCircle : MonoBehaviour
     /// </summary>
     public bool isSafe = false;
     /// <summary>
-    /// Displays the life or score of the player.
+    /// Displays the life of the player.
     /// </summary>
     [SerializeField]
-    private Text _scoreText;
+    private Text _lifeText;
     /// <summary>
-    /// Score or life of the player.
+    /// Life of the player.
     /// </summary>
-    public int score = 1000;
+    public int life = 1000;
     /// <summary>
     /// Maximum life points the players can have.
     /// </summary>
     public int lifeMax = 1000;
+    /// <summary>
+    /// Displays the score of the player.
+    /// </summary>
+    [SerializeField]
+    private Text _scoreText;
+    /// <summary>
+    /// Score of the player.
+    /// </summary>
+    public int score = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -64,9 +73,17 @@ public class TrackerCircle : MonoBehaviour
 
     private void Update()
     {
-        if (score > 0)
+        if (_lifeText != null)
+        {
+            if (life > 0)
+                _lifeText.text = life.ToString();
+            else
+                _lifeText.text = "DEAD";
+        }
+
+        if(_scoreText != null)
+        {
             _scoreText.text = score.ToString();
-        else
-            _scoreText.text = "DEAD";
+        }
     }
 }

@@ -57,7 +57,7 @@ public class PlatformDetection : MonoBehaviour
             if (currentDistance <= _originalDistance + _jump)
             {
                 Debug.Log("Player is losing score.");
-                GetComponent<TrackerCircle>().score--;
+                GetComponent<TrackerCircle>().life--;
             }
             else
             {

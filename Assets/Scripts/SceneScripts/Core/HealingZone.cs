@@ -15,9 +15,9 @@ public class HealingZone : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "PlayerArea" && other.GetComponent<TrackerCircle>().score < other.GetComponent<TrackerCircle>(). lifeMax)
+        if (other.tag == "PlayerArea" && other.GetComponent<TrackerCircle>().life < other.GetComponent<TrackerCircle>(). lifeMax)
         {
-            other.GetComponent<TrackerCircle>().score += _speed;
+            other.GetComponent<TrackerCircle>().life += _speed;
         } 
     }
 }
