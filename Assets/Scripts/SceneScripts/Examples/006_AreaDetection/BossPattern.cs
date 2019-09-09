@@ -37,6 +37,11 @@ public class BossPattern : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text _scoreText;
+    /// <summary>
+    /// What attacks can the boss use?
+    /// </summary>
+    [SerializeField]
+    private bool _hasMeteors, _hasAreaOfDamage, _hasTornado, _hasBreathOfFire;
 
     /// <summary>
     /// An attack that makes meteors fall from the sky in random locations.
@@ -99,13 +104,31 @@ public class BossPattern : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(_break);
-            Meteors();
-            yield return new WaitForSeconds(_break);
-            AreaOfDamage();
-            yield return new WaitForSeconds(_break);
-            Tornado();
-            yield return new WaitForSeconds(_break);
-            BreathOfFire();
+
+            if (_hasMeteors)
+            {
+                Meteors();
+                yield return new WaitForSeconds(_break);
+            }
+
+            if (_hasAreaOfDamage)
+            {
+                AreaOfDamage();
+                yield return new WaitForSeconds(_break);
+            }
+
+            if(_hasTornado)
+            {
+                Tornado();
+                yield return new WaitForSeconds(_break);
+            }
+
+
+            if (_hasBreathOfFire)
+            {
+                BreathOfFire();
+                yield return new WaitForSeconds(_break);
+            }
         }
     }
 
