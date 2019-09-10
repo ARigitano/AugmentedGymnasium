@@ -25,7 +25,7 @@ public class PlatformDetection : MonoBehaviour
     /// <summary>
     /// Height between the void and the feet of the player at the beginning of the game.
     /// </summary>
-    private float _originalDistance;
+    private float _originalHeight;
     /// <summary>
     /// Height of a jump.
     /// </summary>
@@ -35,7 +35,8 @@ public class PlatformDetection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _originalDistance = Mathf.Pow(this.gameObject.transform.position.z + _void.transform.position.z, 2f);
+        //_originalHeight = Mathf.Pow(this.gameObject.transform.position.z + _void.transform.position.z, 2f);
+        _originalHeight = transform.position.z;
     }
 
     // Update is called once per frame
@@ -52,9 +53,11 @@ public class PlatformDetection : MonoBehaviour
         {
             Debug.Log("Player is not on platform.");
 
-            float currentDistance = Mathf.Pow(this.gameObject.transform.position.z + _void.transform.position.z, 2f);
+            float currentHeight = Mathf.Pow(this.gameObject.transform.position.z + _void.transform.position.z, 2f);
 
-            if (currentDistance <= _originalDistance + _jump)
+            //float currentHeight 
+
+            if (currentHeight <= _originalHeight + _jump)
             {
                 Debug.Log("Player is losing score.");
                 GetComponent<TrackerCircle>().life--;

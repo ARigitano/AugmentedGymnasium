@@ -83,6 +83,8 @@ public class TrackerCircle : MonoBehaviour
                 _lifeText.text = life.ToString();
             else
                 _lifeText.text = "DEAD";
+
+           
         }
 
         if (life > 0)
