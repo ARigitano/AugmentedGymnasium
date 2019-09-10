@@ -11,7 +11,7 @@ public class Wall : MonoBehaviour
     {
         if(other.tag == "PlayerArea")
         {
-            other.gameObject.SetActive(false);
+           other.GetComponent<TrackerCircle>().life = 0;
         }
     }
 }

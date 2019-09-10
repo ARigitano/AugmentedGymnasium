@@ -9,7 +9,7 @@ public class Coin : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PlayerArea")
+        if(other.tag == "PlayerArea" && other.GetComponent<TrackerCircle>().isAlive)
         {
             other.GetComponent<TrackerCircle>().score++;
             Destroy(gameObject);

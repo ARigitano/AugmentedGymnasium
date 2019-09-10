@@ -48,6 +48,10 @@ public class TrackerCircle : MonoBehaviour
     /// Score of the player.
     /// </summary>
     public int score = 0;
+    /// <summary>
+    /// Is the player alive?
+    /// </summary>
+    public bool isAlive = true;
 
     // Start is called before the first frame update
     void Awake()
@@ -79,6 +83,17 @@ public class TrackerCircle : MonoBehaviour
                 _lifeText.text = life.ToString();
             else
                 _lifeText.text = "DEAD";
+        }
+
+        if (life <= 0)
+        {
+            isActive = false;
+            _circle.enabled = false;
+        }
+        else
+        {
+            isActive = true;
+            _circle.enabled = true;
         }
 
         if(_scoreText != null)

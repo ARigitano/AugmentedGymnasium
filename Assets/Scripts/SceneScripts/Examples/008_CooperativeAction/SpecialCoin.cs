@@ -9,7 +9,7 @@ public class SpecialCoin : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerArea")
+        if (other.tag == "PlayerArea" && other.GetComponent<TrackerCircle>().isAlive)
         {
             foreach(GameObject player in TrackersManager.instance.trackers)
             {
