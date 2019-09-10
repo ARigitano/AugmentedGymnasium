@@ -85,15 +85,15 @@ public class TrackerCircle : MonoBehaviour
                 _lifeText.text = "DEAD";
         }
 
-        if (life <= 0)
+        if (life > 0)
         {
-            isActive = false;
-            _circle.enabled = false;
+            isAlive = true;
+            _circle.enabled = true;
         }
         else
         {
-            isActive = true;
-            _circle.enabled = true;
+            isAlive = false;
+            _circle.enabled = false;
         }
 
         if(_scoreText != null)
